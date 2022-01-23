@@ -7,7 +7,8 @@ import Notification from "./components/Notification";
 import Popup from "./components/Popup";
 
 const App = () => {
-	const words = ["application", "interface", "programming", "wizard"];
+	const [words, setWords] = useState([]);
+	// const words = ["application", "interface", "programming", "wizard"];
 	// https://random-word-api.herokuapp.com/all
 	const [selectedWord, setSelectedWord] = useState(
 		words[Math.floor(Math.random() * words.length)]
@@ -18,6 +19,14 @@ const App = () => {
 	const [showNotification, setShowNotification] = useState(false);
 	const [showPopup, setShowPopup] = useState(false);
 	const [gameWin, setGameWin] = useState(false);
+	useEffect(() => {
+		fetch(`https://random-word-api.herokuapp.com/all`)
+			.then((res) => res.json())
+			.then((data) => {
+				setWords(data);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 
 	useEffect(() => {
 		const handleKeyDown = (event) => {
@@ -38,6 +47,20 @@ const App = () => {
 					setPlayAble(false);
 					setShowPopup(true);
 					setGameWin(false);
+				} else {
+					let flag = true;
+					for (let i = 0; i < selectedWord.length; ++i) {
+						if (corrects.includes(selectedWord[i])) continue;
+						else {
+							flag = false;
+							break;
+						}
+					}
+					if (flag) {
+						setShowPopup(true);
+						setGameWin(true);
+						setPlayAble(false);
+					}
 				}
 			}
 		};

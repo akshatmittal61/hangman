@@ -94,6 +94,17 @@ h1 {
 	align-items: center;
 	flex-flow: column;
 }
+@media (max-width: 880px) {
+	.popup {
+		width: 75%;
+	}
+}
+@media (max-width: 672px) {
+	.popup {
+		width: 95%;
+		height: 80%;
+	}
+}
 .popup > * {
 	margin: 1.75rem 0;
 }

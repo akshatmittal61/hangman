@@ -1,7 +1,6 @@
 import React from "react";
 
 const Word = ({ selectedWord, correctLs }) => {
-	console.log(selectedWord);
 	return (
 		<div className="word">
 			{selectedWord.split("").map((letter, index) => (
