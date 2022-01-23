@@ -8,26 +8,25 @@ import Popup from "./components/Popup";
 
 const App = () => {
 	const [words, setWords] = useState([]);
-	// const words = ["application", "interface", "programming", "wizard"];
-	// https://random-word-api.herokuapp.com/all
-	const [selectedWord, setSelectedWord] = useState(
-		words[Math.floor(Math.random() * words.length)]
-	);
+	const [selectedWord, setSelectedWord] = useState("wizard");
 	const [playAble, setPlayAble] = useState(true);
 	const [corrects, setCorrects] = useState([]);
 	const [wrongs, setWrongs] = useState([]);
 	const [showNotification, setShowNotification] = useState(false);
 	const [showPopup, setShowPopup] = useState(false);
 	const [gameWin, setGameWin] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+
 	useEffect(() => {
 		fetch(`https://random-word-api.herokuapp.com/all`)
 			.then((res) => res.json())
 			.then((data) => {
 				setWords(data);
+				setIsLoading(false);
+				setSelectedWord(data[Math.floor(Math.random() * words.length)]);
 			})
 			.catch((err) => console.log(err));
 	}, []);
-
 	useEffect(() => {
 		const handleKeyDown = (event) => {
 			const { key, keyCode } = event;
@@ -47,6 +46,7 @@ const App = () => {
 					setPlayAble(false);
 					setShowPopup(true);
 					setGameWin(false);
+					setShowNotification(false);
 				} else {
 					let flag = true;
 					for (let i = 0; i < selectedWord.length; ++i) {
@@ -60,6 +60,7 @@ const App = () => {
 						setShowPopup(true);
 						setGameWin(true);
 						setPlayAble(false);
+						setShowNotification(false);
 					}
 				}
 			}
@@ -70,20 +71,28 @@ const App = () => {
 	const startAgain = () => {
 		setCorrects([]);
 		setWrongs([]);
-		setSelectedWord(words[Math.floor(Math.random() * words.length)]);
 		setShowPopup(false);
 		setGameWin(false);
-		setPlayAble(true);
+		setIsLoading(true);
+		setTimeout(() => {
+			setSelectedWord(words[Math.floor(Math.random() * words.length)]);
+			setIsLoading(false);
+			setPlayAble(true);
+		}, 2500);
 	};
 
 	return (
 		<>
 			<Header />
-			<div className="game-container">
-				<Figure wrongLs={wrongs} />
-				<Wrong wrongLs={wrongs} />
-				<Word selectedWord={selectedWord} correctLs={corrects} />
-			</div>
+			{isLoading ? (
+				<>Fetching Data</>
+			) : (
+				<div className="game-container">
+					<Figure wrongLs={wrongs} />
+					<Wrong wrongLs={wrongs} />
+					<Word selectedWord={selectedWord} correctLs={corrects} />
+				</div>
+			)}
 			{showPopup && (
 				<Popup
 					win={gameWin}
