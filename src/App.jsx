@@ -17,13 +17,19 @@ const App = () => {
 	const [gameWin, setGameWin] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
+	const selectWord = () => {
+		const newWord = words[Math.floor(Math.random() * words.length)];
+		if (newWord.length <= 8) setSelectedWord(newWord);
+		else selectWord();
+	};
+
 	useEffect(() => {
 		fetch(`https://random-word-api.herokuapp.com/all`)
 			.then((res) => res.json())
 			.then((data) => {
 				setWords(data);
 				setIsLoading(false);
-				setSelectedWord(data[Math.floor(Math.random() * words.length)]);
+				selectWord();
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -75,7 +81,7 @@ const App = () => {
 		setGameWin(false);
 		setIsLoading(true);
 		setTimeout(() => {
-			setSelectedWord(words[Math.floor(Math.random() * words.length)]);
+			selectWord();
 			setIsLoading(false);
 			setPlayAble(true);
 		}, 2500);
@@ -85,11 +91,15 @@ const App = () => {
 		<>
 			<Header />
 			{isLoading ? (
-				<>Fetching Data</>
+				<div className="loading-container">
+					<div className="loading">Getting Data</div>
+				</div>
 			) : (
 				<div className="game-container">
-					<Figure wrongLs={wrongs} />
-					<Wrong wrongLs={wrongs} />
+					<div className="game-panel">
+						<Figure wrongLs={wrongs} />
+						<Wrong wrongLs={wrongs} />
+					</div>
 					<Word selectedWord={selectedWord} correctLs={corrects} />
 				</div>
 			)}
