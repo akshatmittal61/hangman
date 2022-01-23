@@ -11,10 +11,17 @@ body {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
-	height: 90vh;
 	overflow: hidden;
 	background-color: #34495e;
 	color: #f0f0f0;
+}
+#root {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	position: relative;
 }
 h1 {
 	margin: 1.5rem 0 0;
@@ -31,9 +38,6 @@ h1 {
 	stroke: #fff;
 	stroke-width: 4px;
 	stroke-linecap: round;
-}
-.figure-part {
-	display: none;
 }
 .wrong-letters-container {
 	position: absolute;
@@ -67,49 +71,62 @@ h1 {
 	width: 2rem;
 }
 .popup-container {
-	background-color: rgba(0, 0, 0, 0.3);
+	background-color: rgba(0, 0, 0, 0.5);
 	position: fixed;
 	top: 0;
-	bottom: 0;
 	left: 0;
-	right: 0;
-	display: none;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 .popup {
+	width: 50%;
+	height: 50%;
+	border: 0.5rem solid #fbbc05;
 	background: #2980b9;
 	border-radius: 5px;
 	box-shadow: 0 15px 10px 3px rgba(0, 0, 0, 0.1);
 	padding: 1.25rem;
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-flow: column;
+}
+.popup > * {
+	margin: 1.75rem 0;
+}
+.popup h2 {
+	font-size: 2.5rem;
+}
+.popup h3 {
+	font-size: 1.75rem;
 }
 .popup button {
+	padding: 0.875rem 1.75rem;
+	font-size: 1.25rem;
+	border-radius: 7.5px;
 	cursor: pointer;
-	background-color: #fff;
-	color: #2980b9;
-	border: 0;
-	margin-top: 1.25rem;
-	padding: 0.75rem 1.25rem;
-	font-size: 1rem;
-}
-.popup button:active {
-	transform: scale(0.98);
+	background-color: #fbbc05;
+	border: 5px solid rgba(0, 0, 0, 0.2);
 }
 .popup button:focus {
+	border: 5px solid transparent;
 	outline: 0;
-}
-.notification-container {
-	background-color: rgba(0, 0, 0, 0.3);
-	border-radius: 10px 10px 0 0;
-	padding: 1rem 1.25rem;
-	position: absolute;
-	bottom: -50px;
-	transition: transform 0.3s ease-in-out;
 }
 .notification-container p {
 	margin: 0;
 }
 .notification-container.show {
 	transform: translateY(-50px);
+}
+.notification-container {
+	width: fit-content;
+	padding: 1rem 1.875rem;
+	background-color: rgba(0, 0, 0, 0.3);
+	position: fixed;
+	bottom: 2rem;
+	font-size: 1.5rem;
+	transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
