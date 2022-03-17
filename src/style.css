@@ -35,8 +35,7 @@ h1 {
 	margin: 1.5rem 0 0;
 }
 .game-container {
-	padding: 1.25rem 1.875rem;
-	/* position: relative; */
+	padding: 1.25rem 1.875rem 0 1.875rem;
 	margin: auto;
 	height: 80vh;
 	width: 50vw;
@@ -72,15 +71,25 @@ h1 {
 .wrong-letters-container span {
 	font-size: 1.5rem;
 }
+.game-figure-container {
+	width: 50vh;
+	height: 50vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+.game-figure {
+	width: 50%;
+	height: 50%;
+	background-size: contain;
+	background-position: center;
+}
 .word {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin: 2rem 0;
-	/* position: absolute; */
-	/* bottom: 10px; */
-	/* left: 50%; */
-	/* transform: translateX(-50%); */
 }
 .letter {
 	border-bottom: 0.25rem solid #2980b9;

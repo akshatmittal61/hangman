@@ -16,6 +16,7 @@ const App = () => {
 	const [showPopup, setShowPopup] = useState(false);
 	const [gameWin, setGameWin] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [images, setImages] = useState([]);
 
 	const selectWord = () => {
 		const newWord = words[Math.floor(Math.random() * words.length)];
@@ -71,9 +72,20 @@ const App = () => {
 				}
 			}
 		};
+
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [corrects, wrongs, playAble]);
+	useEffect(() => {
+		fetch(
+			`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${selectedWord}&image_type=photo&pretty=true&page=1&per_page=4`
+		)
+			.then((res) => res.json())
+			.then((data) => {
+				setImages(data.hits);
+			})
+			.catch((err) => console.log(err));
+	}, [selectedWord]);
 	const startAgain = () => {
 		setCorrects([]);
 		setWrongs([]);
@@ -95,13 +107,28 @@ const App = () => {
 					<div className="loading">Getting Data</div>
 				</div>
 			) : (
-				<div className="game-container">
-					<div className="game-panel">
-						<Figure wrongLs={wrongs} />
-						<Wrong wrongLs={wrongs} />
+				<>
+					<div className="game-container">
+						<div className="game-panel">
+							<Figure wrongLs={wrongs} />
+							<Wrong wrongLs={wrongs} />
+						</div>
+						<div className="game-figure-container">
+							{images.map((image) => (
+								<div
+									className="game-figure"
+									style={{
+										backgroundImage: `url(${image.largeImageURL})`,
+									}}
+								></div>
+							))}
+						</div>
+						<Word
+							selectedWord={selectedWord}
+							correctLs={corrects}
+						/>
 					</div>
-					<Word selectedWord={selectedWord} correctLs={corrects} />
-				</div>
+				</>
 			)}
 			{showPopup && (
 				<Popup
